@@ -1,132 +1,141 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <style type="text/css">
+      .fl {
+        float: left;
+      }
 
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<style type="text/css">
-			.fl {
-				float: left;
-			}
-			
-			.audio,
-			.unable {
-				width: 0;
-				height: 0;
-				visibility: hidden;
-			}
-			
-			.click {
-				width: 50px;
-				height: 20px;
-				text-align: center;
-				line-height: 20px;
-				background: #009926;
-				color: #fff;
-				font-size: 14px;
-			}
-			
-			.main {
-				width: 800px;
-				height: 20px;
-				margin-top: 15px;
-				border: 1px solid #CCCCFF;
-				position: relative;
-			}
-			
-			.load {
-				background: #009926;
-				width: 0;
-				height: 20px;
-				position: absolute;
-				left: 0;
-			}
-		</style>
-	</head>
+      .audio,
+      .unable {
+        width: 0;
+        height: 0;
+        visibility: hidden;
+      }
 
-	<body>
-		<div class="audioplayer">
-			<audio preload="auto" controls class="audio">
-				<source src="bc4f2643fac601dab435f3b691c5e0f58e81777f78dd83babf058296e85212c3.mp3">
-			</audio>
-			<div>
-				<div class="audio_clik">点击</div>
-				<div class="main">
-					<div class="load"></div>
-				</div>
-				<div class="audio_time"></div>
-			</div>
-		</div>
+      .click {
+        width: 50px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        background: #009926;
+        color: #fff;
+        font-size: 14px;
+      }
 
-		<div class="audioplayer">
-			<audio preload="auto" controls class="audio">
-				<source src="seeyouagain.mp3">
-			</audio>
-			<div>
-				<div class="audio_clik">点击</div>
-				<div class="main">
-					<div class="load"></div>
-				</div>
-				<div class="audio_time"></div>
-			</div>
-		</div>
+      .main {
+        width: 800px;
+        height: 20px;
+        margin-top: 15px;
+        border: 1px solid #ccccff;
+        position: relative;
+      }
 
-		<script type="text/javascript" src="../html5/public/js/jquery-1.7.2.min.js"></script>
-		<script>
-			$(function() {
-                initDuration();
-				$('.audio_clik').on('click', function() {
-					var container = $(this).parents('.audioplayer');
-					var load = container.find('.load')[0];
-					var time = container.find('.audio_time')[0];
-					var audios = $('body').find('audio');
-					for(var i = 0; i < audios.length; i++) {
-						audios[i].className = 'unable';
-						$(container).find('audio').removeClass('unable').addClass('audio');
-						if(audios[i].className == 'audio') {
-							if(audios[i].paused) {
-								audios[i].play();
-							} else {
-								audios[i].pause();
-							}
-							initAudio(audios[i], load, time);
-						} else {
-							audios[i].pause();
-							audios[i].currentTime = 0;
-						}
-					}
+      .load {
+        background: #009926;
+        width: 0;
+        height: 20px;
+        position: absolute;
+        left: 0;
+      }
+    </style>
+  </head>
 
-				});
+  <body>
+    <div class="audioplayer">
+      <audio preload="auto" controls class="audio">
+        <source
+          src="bc4f2643fac601dab435f3b691c5e0f58e81777f78dd83babf058296e85212c3.mp3"
+        />
+      </audio>
+      <div>
+        <div class="audio_clik">点击</div>
+        <div class="main">
+          <div class="load"></div>
+        </div>
+        <div class="audio_time"></div>
+      </div>
+    </div>
 
-				function initAudio(audio, load, time) {
-					audio.addEventListener('timeupdate', function() {
-						if(!isNaN(audio.duration)) {
-							var speed = 100 / audio.duration;
-							var progressValue = audio.currentTime * speed;
-							load.style.width = parseInt(progressValue) + '%';
-						};
-						time.innerHTML = ceilTime(audio.duration - audio.currentTime);
-					}, false);
-				
-				};
+    <div class="audioplayer">
+      <audio preload="auto" controls class="audio">
+        <source src="seeyouagain.mp3" />
+      </audio>
+      <div>
+        <div class="audio_clik">点击</div>
+        <div class="main">
+          <div class="load"></div>
+        </div>
+        <div class="audio_time"></div>
+      </div>
+    </div>
 
-				function ceilTime(t) {
-					var minutes = Math.floor(t / 60) + ":" + (t % 60 / 100).toFixed(2).slice(-2);
-					return minutes;
-				}
+    <script
+      type="text/javascript"
+      src="../html5/public/js/jquery-1.7.2.min.js"
+    ></script>
+    <script>
+      $(function() {
+        initDuration();
+        $(".audio_clik").on("click", function() {
+          var container = $(this).parents(".audioplayer");
+          var load = container.find(".load")[0];
+          var time = container.find(".audio_time")[0];
+          var audios = $("body").find("audio");
+          for (var i = 0; i < audios.length; i++) {
+            audios[i].className = "unable";
+            $(container)
+              .find("audio")
+              .removeClass("unable")
+              .addClass("audio");
+            if (audios[i].className == "audio") {
+              if (audios[i].paused) {
+                audios[i].play();
+              } else {
+                audios[i].pause();
+              }
+              initAudio(audios[i], load, time);
+            } else {
+              audios[i].pause();
+              audios[i].currentTime = 0;
+            }
+          }
+        });
 
-				function initDuration() {
-					var audios = $('body').find('.audio');
-					var audio_time = $('body').find('.audio_time');
-					for(var i = 0; i < audios.length; i++) {
-//						if(!isNaN(audios[i].duration)) {
-							audio_time[i].innerHTML = ceilTime(audios[i].duration);
-//						}
-					}
-				}
+        function initAudio(audio, load, time) {
+          audio.addEventListener(
+            "timeupdate",
+            function() {
+              if (!isNaN(audio.duration)) {
+                var speed = 100 / audio.duration;
+                var progressValue = audio.currentTime * speed;
+                load.style.width = parseInt(progressValue) + "%";
+              }
+              time.innerHTML = ceilTime(audio.duration - audio.currentTime);
+            },
+            false
+          );
+        }
 
-			})
-		</script>
-	</body>
+        function ceilTime(t) {
+          var minutes =
+            Math.floor(t / 60) + ":" + ((t % 60) / 100).toFixed(2).slice(-2);
+          return minutes;
+        }
 
+        function initDuration() {
+          var audios = $("body").find(".audio");
+          var audio_time = $("body").find(".audio_time");
+          for (var i = 0; i < audios.length; i++) {
+            //						if(!isNaN(audios[i].duration)) {
+            audio_time[i].innerHTML = ceilTime(audios[i].duration);
+            //						}
+          }
+        }
+      });
+    </script>
+    <div>小仙女</div>
+  </body>
 </html>
